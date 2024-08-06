@@ -1,0 +1,61 @@
+.outreach-container {
+  grid-area: content;
+}
+
+.outreach-header {
+  grid-area: sidebar;
+}
+
+.event-container {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "sidebar content"
+    "footer footer";
+  grid-template-columns: 1fr 3fr;
+  gap: 20px;
+  background-color: #343d46;
+  height: 100vh;
+  width: 100vw;
+}
+
+article {
+  grid-area: content;
+  display: grid;
+  grid-template-columns: repeat(4, 4fr);
+}
+
+aside {
+  grid-area: sidebar;
+  border-right: 1px solid #d2ac86;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body {
+  width: 100vw;
+  max-width: 900px;
+  font: 0.9em/1.2 Helvetica;
+}
+
+.outreachExample {
+  color: #FBE0C5;
+  font-family: Helvetica;
+  text-align: center;
+  font-weight: 700;
+  margin: 10px;
+  background-color: #de8149;
+  border-radius: 15px;
+  padding: 10px;
+  height: fit-content;
+  align-items: center;
+}
+
+.outreach-desc {
+  color: #FBE0C5;
+  font-family: Helvetica;
+  font-weight: 700;
+  width: 20vw;
+  text-align: center;
+}
