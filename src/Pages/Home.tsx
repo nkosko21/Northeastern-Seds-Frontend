@@ -1,10 +1,10 @@
 import React from "react";
 import Navigationbar from "../Components/Navigationbar";
 import './Home.css';
-const SEDS_group = require('../Images/SEDS_group.jpeg');
-const SEDS_Station = require('../Images/SEDS_Station.jpeg');
-const SEDS_Red = require('../Images/SEDS_red.png');
-const SEDS_Rover = require('../Images/SEDS_Rover.png');
+const SEDS_group = require('../../public/Images/SEDS_group');
+const SEDS_Station = require('../../public/Images/SEDS_Station.jpeg');
+const SEDS_Red = require('../../public/Images/SEDS_red.png');
+const SEDS_Rover = require('../../public/Images/SEDS_Rover.png');
 
 export default function Home() {
 

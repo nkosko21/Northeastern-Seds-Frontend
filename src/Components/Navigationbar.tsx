@@ -1,7 +1,7 @@
 import React from 'react';
 import pages from '../Data/pages';
 import './Navigationbar.css';
-const SEDS_Logo = require('../Images/SEDS_Logo.png');
+const SEDS_Logo = require('../../public/Images/SEDS_Logo.png');
 
 const Navigation = ({highlighted} : {highlighted: string}) => {
   return (
