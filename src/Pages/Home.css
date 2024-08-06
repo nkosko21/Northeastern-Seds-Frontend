@@ -1,0 +1,55 @@
+.home-container {
+  background-color: 	#343d46;
+  height: fit-content;
+}
+
+.about-container {
+  display: grid;
+  width: 70vw;
+  grid-template-columns: repeat(2, 3fr);
+  gap: 20px;
+}
+
+.about-header {
+  color: #de8149;
+  font-family: Helvetica;
+  text-align: center;
+  font-size: 3rem;
+  margin: 0px;
+}
+
+.about-text-blocks {
+  color: #FBE0C5;
+  font-family: Helvetica;
+  text-align: center;
+  width: 30vw;
+  font-weight: 700;
+}
+
+.seds-group {
+  height: 45vh;
+  width: 30vw;
+  border-radius: 15px;
+  margin-bottom: 40px;
+}
+
+.seds-rover {
+  height: 35vh;
+  width: 25vw;
+  border-radius: 15px;
+}
+
+.seds-station {
+  height: 50vh;
+  width: 33vw;
+  border-radius: 15px;
+}
+
+.seds-red {
+  height: 30vh;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
