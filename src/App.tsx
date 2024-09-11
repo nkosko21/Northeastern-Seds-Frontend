@@ -1,6 +1,7 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { MantineProvider } from '@mantine/core';
 import Home from './Pages/Home';
 import Events from './Pages/Events';
 import Projects from './Pages/Projects';
@@ -11,6 +12,7 @@ import Contact from './Pages/Contact';
 
 function App() {
   return (
+    <MantineProvider>
     <BrowserRouter> 
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
@@ -23,6 +25,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
       </Routes>
     </BrowserRouter>
+    </MantineProvider>
   );
 }
 
