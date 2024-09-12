@@ -5,7 +5,9 @@
 }
 
 .about-container {
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 70vw;
   grid-template-columns: repeat(2, 3fr);
   gap: 20px;
@@ -15,7 +17,8 @@
   color: #de8149;
   font-family: Helvetica;
   text-align: center;
-  font-size: 3rem;
+  font-size: 5rem;
+  font-weight: 800;
   margin: 0px;
 }
 
@@ -53,4 +56,29 @@
 .row {
   display: flex;
   flex-direction: row;
+}
+
+.project-container {
+  width: 45vw;
+  height: 35vh;
+  background-color: #ca6d3c;
+  border-radius: 25px;
+  font-size: 1.5rem;
+  margin: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.project-container p {
+  color: rgb(222, 207, 207);
+  font-size: .75rem;
+  margin: 0;
+  font-weight: 800;
+}
+
+.project-container h1 {
+  margin: 0;
+  color: #263748;
 }
