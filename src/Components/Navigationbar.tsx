@@ -7,15 +7,15 @@ const Navigation = ({highlighted} : {highlighted: string}) => {
   return (
     <>
       <div className="nav-container">
-      <img src={SEDS_Logo} alt="SEDS Logo" className='seds-logo'/>
-        {pages.map((page) => (
-          <PageLink
-            key={page.link}
-            text={page.text}
-            link={page.link}
-            highlighted={page.link === highlighted}
-          />
-        ))}
+        <img src={SEDS_Logo} alt="SEDS Logo" className='seds-logo'/>
+          {pages.map((page) => (
+            <PageLink
+              key={page.link}
+              text={page.text}
+              link={page.link}
+              highlighted={page.link === highlighted}
+            />
+          ))}
       </div>
       <div style={{ width: '100vw', height: '5px', backgroundColor: '#2000FF'}}></div>
       <div style={{ width: '100vw', height: '5px', backgroundColor: '#FBD309'}}></div>
