@@ -4,6 +4,7 @@ import SplashPage from './components/SplashPage'; // Import the SplashPage compo
 import MainPage from './components/MainPage'; // Import the MainPage component
 import axios from 'axios'; // Import axios for making HTTP requests
 import React, { useState } from 'react'; // Import React and useState hook
+import https from 'https';
 
 function Finance() {
 
@@ -17,11 +18,19 @@ function Finance() {
   console.log('using https')
   const url = `https://35.208.168.62:8000/`; // Base URL for the API
 
+  const httpsAgent = new https.Agent({
+    rejectUnauthorized: false // For development only
+  });
+
+  const instance = axios.create({
+    baseURL: url,
+    httpsAgent
+  });
   // Function to handle sign-in action
   const onSignIn = (text: string) => {
     console.log('signing in...');
     // Make a GET request to authenticate the user
-    axios.get(url + `auth/${text}`)
+    instance.get(url + `auth/${text}`)
       .then(response => {
         // Assuming the API response contains a 'Name' field
         console.log(response.data);
@@ -43,14 +52,14 @@ function Finance() {
   };
 
   const postRequest = (request: any) => {
-    axios.post(url + 'submit/request', request)
+    instance.post(url + 'submit/request', request)
       .catch(error => {
         console.error('Error posting request:', error);
       });
   };
 
   const postApproval = (approval: any) => {
-    axios.post(url + 'approve', approval)
+    instance.post(url + 'approve', approval)
       .catch(error => {
         console.error('Error posting approval:', error);
       });
@@ -62,7 +71,7 @@ function Finance() {
     Array.from(files).forEach(file => {
       formData.append(`file_uploads`, file);
     });
-    axios.post(url + 'upload/' + id, formData)
+    instance.post(url + 'upload/' + id, formData)
       .then(() => {
         axios.post(url + 'submit/final', { 'Cost': cost, 'Tax': tax, 'Request': request, 'ID': id })
           .then(() => {
@@ -78,7 +87,7 @@ function Finance() {
   };
 
   const getOptions = () => {
-    axios.get(url + 'options')
+    instance.get(url + 'options')
       .then(response => {
         setOptions(response.data);
       })
