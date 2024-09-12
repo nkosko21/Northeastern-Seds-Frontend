@@ -4,33 +4,21 @@ import SplashPage from './components/SplashPage'; // Import the SplashPage compo
 import MainPage from './components/MainPage'; // Import the MainPage component
 import axios from 'axios'; // Import axios for making HTTP requests
 import React, { useState } from 'react'; // Import React and useState hook
-import https from 'https';
 
 function Finance() {
-
-  type Dictionary = { [key: string]: any };
-
   // State to store the username of the signed-in user
-  const [username, setUsername] = useState<string>('');
-  const [user, setUser] = useState<Dictionary>({});
-  const [req_list, setReqList] = useState<Dictionary>({});
-  const [options, setOptions] = useState<Dictionary>({});
+  const [username, setUsername] = useState('');
+  const [user, setUser] = useState({});
+  const [req_list, setReqList] = useState({});
+  const [options, setOptions] = useState({});
   console.log('using https')
-  const url = `https://35.208.168.62:8000/`; // Base URL for the API
+  const url = `https://api.northeasternseds.com/`; // Base URL for the API
 
-  const httpsAgent = new https.Agent({
-    rejectUnauthorized: false // For development only
-  });
-
-  const instance = axios.create({
-    baseURL: url,
-    httpsAgent
-  });
   // Function to handle sign-in action
-  const onSignIn = (text: string) => {
+  const onSignIn = (text) => {
     console.log('signing in...');
     // Make a GET request to authenticate the user
-    instance.get(url + `auth/${text}`)
+    axios.get(url + `auth/${text}`)
       .then(response => {
         // Assuming the API response contains a 'Name' field
         console.log(response.data);
@@ -51,27 +39,27 @@ function Finance() {
       });
   };
 
-  const postRequest = (request: any) => {
-    instance.post(url + 'submit/request', request)
+  const postRequest = (request) => {
+    axios.post(url + 'submit/request', request)
       .catch(error => {
         console.error('Error posting request:', error);
       });
   };
 
-  const postApproval = (approval: any) => {
-    instance.post(url + 'approve', approval)
+  const postApproval = (approval) => {
+    axios.post(url + 'approve', approval)
       .catch(error => {
         console.error('Error posting approval:', error);
       });
   };
 
-  const postFiles = (cost: number, tax: number, request: any, id: string, files: FileList) => {
+  const postFiles = (cost, tax, request, id, files) => {
     if (files.length === 0) { return; }
     const formData = new FormData();
     Array.from(files).forEach(file => {
       formData.append(`file_uploads`, file);
     });
-    instance.post(url + 'upload/' + id, formData)
+    axios.post(url + 'upload/' + id, formData)
       .then(() => {
         axios.post(url + 'submit/final', { 'Cost': cost, 'Tax': tax, 'Request': request, 'ID': id })
           .then(() => {
@@ -87,7 +75,7 @@ function Finance() {
   };
 
   const getOptions = () => {
-    instance.get(url + 'options')
+    axios.get(url + 'options')
       .then(response => {
         setOptions(response.data);
       })
