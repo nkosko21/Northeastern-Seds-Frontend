@@ -14,7 +14,7 @@ function Finance() {
   const [user, setUser] = useState<Dictionary>({});
   const [req_list, setReqList] = useState<Dictionary>({});
   const [options, setOptions] = useState<Dictionary>({});
-
+  console.log('using https')
   const url = `https://35.208.168.62:8000/`; // Base URL for the API
 
   // Function to handle sign-in action
