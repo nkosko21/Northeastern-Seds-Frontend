@@ -15,7 +15,7 @@ function Finance() {
   const [req_list, setReqList] = useState<Dictionary>({});
   const [options, setOptions] = useState<Dictionary>({});
 
-  const url = `http://127.0.0.1:8000/`; // Base URL for the API
+  const url = `http://35.208.168.62:8000/`; // Base URL for the API
 
   // Function to handle sign-in action
   const onSignIn = (text: string) => {
