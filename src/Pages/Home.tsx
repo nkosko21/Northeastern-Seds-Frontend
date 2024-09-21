@@ -1,10 +1,6 @@
 import React from "react";
 import Navigationbar from "../Components/Navigationbar";
 import './Home.css';
-const SEDS_group = require('../Images/SEDS_group.jpeg');
-const SEDS_Station = require('../Images/SEDS_Station.jpeg');
-const SEDS_Red = require('../Images/SEDS_red.png');
-const SEDS_Rover = require('../Images/SEDS_Rover.png');
 const projects = [
   {
     logo: null,
@@ -51,7 +47,12 @@ export default function Home() {
     <br />
     <h1 className="about-header">Projects.</h1>
     <br />
-    <span style={{ display: 'flex', justifyContent: 'center'}}>
+    <span 
+      style={{
+        display: 'flex',
+        justifyContent: 'center'
+      }
+    }>
       {/* <div className="about-container">
         <img src={SEDS_Rover} className='seds-rover'/>
         <p className="about-text-blocks">

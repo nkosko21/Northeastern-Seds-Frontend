@@ -8,8 +8,8 @@ const pages = [
     link: 'events'
   },
   {
-    text: 'Projects',
-    link: 'projects'
+    text: 'About',
+    link: 'about'
   },
   {
     text: 'Membership',
