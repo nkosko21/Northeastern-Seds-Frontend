@@ -1,0 +1,13 @@
+.link {
+  text-decoration: none;
+  color: #de8149;
+  font-family: Helvetica;
+  font-weight: 800;
+}
+
+.social-icons {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  justify-content: space-around;
+}

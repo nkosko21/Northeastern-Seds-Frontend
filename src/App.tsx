@@ -7,7 +7,6 @@ import Events from './Pages/Events';
 import Projects from './Pages/About';
 import Membership from './Pages/Membership';
 import JoinUs from './Pages/JoinUs';
-import Results from './Pages/Results';
 import Contact from './Pages/Contact';
 import Finance from './Finance/Finance'
 
@@ -22,7 +21,6 @@ function App() {
         <Route path="/about" element={<Projects />} />
         <Route path="/membership" element={<Membership />} />
         <Route path="/joinus" element={<JoinUs />} />
-        <Route path="/results" element={<Results />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/purchase" element={<Finance />} />
       </Routes>

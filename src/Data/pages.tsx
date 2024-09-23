@@ -12,20 +12,8 @@ const pages = [
     link: 'about'
   },
   {
-    text: 'Membership',
-    link: 'membership'
-  },
-  {
     text: 'Join Us!',
     link: 'joinus'
-  },
-  {
-    text: 'Results',
-    link: 'results'
-  },
-  {
-    text: 'Contact',
-    link: 'contact'
   },
 ];
 
