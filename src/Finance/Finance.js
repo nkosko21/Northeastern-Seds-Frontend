@@ -12,7 +12,7 @@ function Finance() {
   const [req_list, setReqList] = useState({});
   const [options, setOptions] = useState({});
   console.log('using https')
-  const url = `http://api.northeasternseds.com/`; // Base URL for the API
+  const url = `https://api.northeasternseds.com/`; // Base URL for the API
 
   // Function to handle sign-in action
   const onSignIn = (text) => {
