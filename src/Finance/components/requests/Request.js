@@ -18,7 +18,7 @@ const Request = ({ curr_req, sortedEntries, req_list, user, postApproval }) => {
     const canApprove = (user, request) => {
         console.log(user["Permissions"])
         var is_business = (user["Permissions"].includes("Business") && request["Status"] === "Pending Approval")
-        var is_admin = (user["Permissions"].includes("Admin") && user["Permissions"].includes(request["Project"]) && request["Status"] === "Pending Approval")
+        var is_admin = (user["Permissions"].includes("Admin") && user["Permissions"].includes(request["Project"]) && request["Status"] === "Pending Admin Approval")
         return is_business || is_admin
     }
 
