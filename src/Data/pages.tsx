@@ -8,24 +8,12 @@ const pages = [
     link: 'events'
   },
   {
-    text: 'Projects',
-    link: 'projects'
-  },
-  {
-    text: 'Membership',
-    link: 'membership'
+    text: 'About',
+    link: 'about'
   },
   {
     text: 'Join Us!',
     link: 'joinus'
-  },
-  {
-    text: 'Results',
-    link: 'results'
-  },
-  {
-    text: 'Contact',
-    link: 'contact'
   },
 ];
 

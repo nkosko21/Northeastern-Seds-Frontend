@@ -4,10 +4,9 @@ import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-route
 import { MantineProvider } from '@mantine/core';
 import Home from './Pages/Home';
 import Events from './Pages/Events';
-import Projects from './Pages/Projects';
+import Projects from './Pages/About';
 import Membership from './Pages/Membership';
 import JoinUs from './Pages/JoinUs';
-import Results from './Pages/Results';
 import Contact from './Pages/Contact';
 import Finance from './Finance/Finance'
 
@@ -19,10 +18,9 @@ function App() {
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<Home />} />
         <Route path="/events" element={<Events />} />
-        <Route path="/projects" element={<Projects />} />
+        <Route path="/about" element={<Projects />} />
         <Route path="/membership" element={<Membership />} />
         <Route path="/joinus" element={<JoinUs />} />
-        <Route path="/results" element={<Results />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/purchase" element={<Finance />} />
       </Routes>
