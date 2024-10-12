@@ -23,8 +23,8 @@ const Request = ({ curr_req, sortedEntries, req_list, user, postApproval }) => {
     }
 
     return (
-        <div class="request">
-            {curr_req >= 0 && sortedEntries[curr_req] && req_list[curr_req]["Status"] !== 'Approved' ? (
+        <div className="request">
+            {curr_req >= 0 && sortedEntries.map(subArray => Number(subArray[0])).includes(Number(curr_req)) && req_list[curr_req]["Status"] !== 'Approved' ? (
                 <>
                     {/* Render details of the currently selected request */}
                     At {req_list[curr_req]["Request Date"]} from {req_list[curr_req]["Requestee"]}

@@ -33,6 +33,7 @@ function SpreadsheetData() {
             spreadsheetId: SPREADSHEET_ID,
             range: RANGE,
         }).then(response => {
+            console.log(response);
             setData(response.result.values);
         }).catch(error => {
             console.error('Error fetching data', error);

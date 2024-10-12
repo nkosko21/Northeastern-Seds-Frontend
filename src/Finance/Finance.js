@@ -12,7 +12,7 @@ function Finance() {
   const [req_list, setReqList] = useState({});
   const [options, setOptions] = useState({});
   console.log('using https')
-  const url = `https://api.northeasternseds.com/`; // Base URL for the API
+  const url = `http://5.161.101.84:8000/`; // Base URL for the API
 
   // Function to handle sign-in action
   const onSignIn = (text) => {
@@ -77,6 +77,7 @@ function Finance() {
   const getOptions = () => {
     axios.get(url + 'options')
       .then(response => {
+        console.log(response.data);
         setOptions(response.data);
       })
       .catch(error => {

@@ -15,7 +15,7 @@ const RequestList = ({ req_list, setCurrReq, currReq }) => {
             {/* Render each sorted request with its description and cost */}
             {sortedEntries.map(([key, value]) => (
                 <div
-                    onClick={() => setCurrReq(key)} // Set the selected request key when clicked
+                    onClick={() => { console.log(key); setCurrReq(key) }} // Set the selected request key when clicked
                     className='item'
                     key={key}
                     style={{ backgroundColor: getItemColor(key) }}
