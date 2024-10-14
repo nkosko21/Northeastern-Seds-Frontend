@@ -1,0 +1,51 @@
+.bar {
+    background-color: #c5cdd5;
+    width: 100vw;
+    height: 15vh;
+    display: flex;
+    align-items: center;
+}
+
+.leftContent {
+    width: 50%;
+}
+
+.logo {
+    margin: 0.75%;
+    margin-left: 5%;
+    height: 12vh;
+}
+
+.rightContent {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 5%;
+    height: 100%;
+    align-items: center;
+}
+
+.rightContent button {
+    font-family: inherit;
+    background: none;
+    margin-left: 5%;
+    border: 1px solid black;
+    width: 20%;
+    height: 50%;
+    font-size: larger;
+}
+
+.rightContent button:hover {
+    background-color: #7f8386;
+}
+
+.rightContent input {
+    background-color: white;
+    border: none;
+    border-radius: 50px;
+    text-align: center;
+    font-family: inherit;
+    font-size: larger;
+    height: 50%;
+    width: 50%;
+}

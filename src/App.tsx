@@ -13,18 +13,18 @@ import Finance from './Finance/Finance'
 function App() {
   return (
     <MantineProvider>
-    <BrowserRouter> 
-      <Routes>
-        <Route path="/" element={<Navigate to="/home" />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/about" element={<Projects />} />
-        <Route path="/membership" element={<Membership />} />
-        <Route path="/joinus" element={<JoinUs />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/purchase" element={<Finance />} />
-      </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/about" element={<Projects />} />
+          <Route path="/membership" element={<Membership />} />
+          <Route path="/joinus" element={<JoinUs />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/purchase" element={<Finance />} />
+        </Routes>
+      </BrowserRouter>
     </MantineProvider>
   );
 }
