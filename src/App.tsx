@@ -8,7 +8,7 @@ import Projects from './Pages/About';
 import Membership from './Pages/Membership';
 import JoinUs from './Pages/JoinUs';
 import Contact from './Pages/Contact';
-import Finance from './Finance/Finance'
+import Finance from './Financev2/Finance'
 
 function App() {
   return (

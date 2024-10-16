@@ -1,4 +1,4 @@
-import {User} from '../../../backend/datatypes'
+import {User} from '../../../finance/datatypes'
 import './MyItemsPanel.css'
 
 const AboutMePanel = ({user} : {user: User}) => {

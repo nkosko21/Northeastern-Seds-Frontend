@@ -1,4 +1,4 @@
-import {User, BudgetItem} from '../../../backend/datatypes'
+import {User, BudgetItem} from '../../../finance/datatypes'
 import './BudgetItemsPanel.css'
 const ItemsLogo = require('../../../../Images/milkyway.jpg');
 const rover = require('../../../../Images/roverlogo.png')

@@ -1,22 +1,27 @@
 import './NewSubmission.css'
 import { setPopup } from './PopupManager';
-import { getOptions } from '../backend/finance_interface';
-import { User } from '../backend/datatypes';
+import { getOptions } from '../finance/finance_interface';
+import { User } from '../finance/datatypes';
 import { useState } from 'react';
-import { SubmissionOptions } from '../backend/datatypes';
+import { SubmissionOptions, Request, createBlankRequest } from '../finance/datatypes';
+import { submitRequest } from '../finance/finance_interface';
 
-const NewSubmission = ({user}:{user:User}) => {
+const NewSubmission = ({user, update}:{user:User, update:() => void}) => {
     const image = require('../../Images/webb-assembly.jpg');
     const cashOptions = ['Travel Purchase', 'Non-Travel Purchase']
 
     const [options, setOptions] = useState<SubmissionOptions>({budgetOptions: [''], projectOptions: [''], subteamOptions: [], adminThreashold: -1});
+    const [request, setRequest] = useState<Request>(createBlankRequest());
+    
     if( options.adminThreashold === -1 ){
-        getOptions().then((response) => setOptions(response));
+        getOptions().then((response) => setOptions(response)).then(() => update());
     }
    
     const [account, setAccount] = useState<string>("Budget Account")
     const [index, setIndex] = useState<string>(options.budgetOptions[0])
     const [description, setDescription] = useState<string>('');
+    const [link, setLink] = useState<string>('');
+    const [cost, setCost] = useState<string>('0');
     const [project, setProject] = useState<string>(user.project);
     const [subteam, setSubteam] = useState<string>(user.subteam);
 
@@ -68,14 +73,18 @@ const NewSubmission = ({user}:{user:User}) => {
                     </div>
                     <div className='line'>
                         <h2>Cost:</h2>
-                        <input className='cost'></input>
+                        <input className='cost' value={cost} onChange={(e) => setCost(e.target.value)}></input>
                     </div>
                     <p>Note: Do Not Include Tax</p>
                     <div className='line'>
                         <h2>Link:</h2>
-                        <input></input>
+                        <input value={link} onChange={(e) => setLink(e.target.value)}></input>
                     </div>
-                    <button>Submit</button>
+                    <button onClick={() => submitRequest(
+                        {
+                            'Requestee': user.name, 'Index': index, 'Account': account,
+                            'Description': description, 'Project': project, 'Subteam': subteam, 'Cost': cost, 'Link': link
+                        })}>Submit</button>
                 </div>
             </div>
             

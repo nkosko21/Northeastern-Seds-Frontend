@@ -1,4 +1,4 @@
-import {User, BudgetItem} from '../../backend/datatypes'
+import {User, BudgetItem} from '../../finance/datatypes'
 import AboutMePanel from './components/AboutMePanel';
 import MyItemsPanel from './components/MyItemsPanel';
 import BudgetItemsPanel from './components/BudgetItemsPanel';

@@ -151,10 +151,24 @@ export const getOptions = ():Promise<datatypes.SubmissionOptions> => {
     });
 };
 
-export const submitRequest = (request:Request) => {
-    axios.post(url + 'submit/request', request)
+export const submitRequest = (request:{[key: string]:string}) => {
+    const loading = toast.loading('Submitting Request...');
+    axios.post(url + 'submit/request', request).then(() => {
+        toast.update(loading, {
+            render: "Request Submitted",
+            type: "success",
+            autoClose: 1000,
+            isLoading: false,
+        });
+    })
         .catch(error => {
         console.error('Error posting request:', error);
+        toast.update(loading, {
+            render: error.message,
+            type: "error",
+            autoClose: 1000,
+            isLoading: false,
+        });
         });
 }
 

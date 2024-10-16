@@ -1,5 +1,5 @@
-import {User, BudgetItem} from '../../../backend/datatypes'
-import { getUserItems } from '../../../backend/finance_interface';
+import {User, BudgetItem} from '../../../finance/datatypes'
+import { getUserItems } from '../../../finance/finance_interface';
 import {setPopup} from '../../../popups/PopupManager'
 const MyItemsLogo = require('../../../../Images/satellite.jpeg');
 const pending = require('../../../../Images/pending.png')
