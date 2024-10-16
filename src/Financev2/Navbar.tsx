@@ -4,8 +4,8 @@ import { toast } from 'react-toastify';
 
 const SEDS_Logo = require('../Images/sedslogo.png');
 
-const Navbar = ({ username = "", signIn = () => { } }: { username: string, signIn?: (text: string) => void }) => {
-    const [NUId, setNUId] = useState<string>('');
+const Navbar = ({ id="", username = "", signIn = () => { } }: { id?: string, username: string, signIn?: (text: string) => void }) => {
+    const [NUId, setNUId] = useState<string>(id);
 
     const handleKeyPress = (event: ChangeEvent<HTMLInputElement>) => {
         const currChar: string = event.target.value.charAt(event.target.value.length - 1);

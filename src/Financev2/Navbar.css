@@ -1,7 +1,7 @@
 .bar {
     background-color: #c5cdd5;
     width: 100vw;
-    height: 15vh;
+    height: 10vh;
     display: flex;
     align-items: center;
 }
@@ -13,7 +13,7 @@
 .logo {
     margin: 0.75%;
     margin-left: 5%;
-    height: 12vh;
+    height: 8vh;
 }
 
 .rightContent {

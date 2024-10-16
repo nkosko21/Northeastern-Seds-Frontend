@@ -1,0 +1,40 @@
+.dashboard {
+    background-color: #343d46;
+    height: 85vh;
+    width: 100vw;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.panel {
+    background-color: #7f8386;
+    height: 90%;
+    width: 25%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.panelLogo{
+    border-radius: 10px;
+    height: 20%;
+    width: 75%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    object-fit: cover;
+}
+
+.panel button{
+    width: 75%;
+    height: 15%;
+    bottom: 0;
+    background: none;
+    color: white;
+    border: 2px solid white;
+}
+.panel button:hover{
+    background-color: #a1a8af;
+}
