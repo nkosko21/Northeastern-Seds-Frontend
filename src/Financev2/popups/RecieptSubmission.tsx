@@ -50,6 +50,7 @@ const ReceiptSubmission: React.FC<ReceiptSubmissionProps> = ({ user, item, id, u
     };
 
     const submit = () => {
+        setPopup('');
         postFiles(Number(cost), Number(tax), id, user.id, fileList); // Ensure postFiles accepts File[]
     };
 
