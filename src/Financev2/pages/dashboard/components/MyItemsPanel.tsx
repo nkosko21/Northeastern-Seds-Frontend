@@ -1,7 +1,7 @@
 import {User, BudgetItem} from '../../../finance/datatypes'
 import { getUserItems } from '../../../finance/finance_interface';
 import {setPopup} from '../../../popups/PopupManager'
-const MyItemsLogo = require('../../../../Images/satellite.jpeg');
+const MyItemsLogo = require('../../../../Images/satellite.jpg');
 const pending = require('../../../../Images/pending.png')
 const alert = require('../../../../Images/alert.png')
 const complete = require('../../../../Images/complete.png')
