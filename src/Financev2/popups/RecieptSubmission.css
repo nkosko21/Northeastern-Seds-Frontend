@@ -1,0 +1,48 @@
+.recieptPanel *{
+    margin-top: .75vh;
+    margin-bottom: .75vh;
+}
+
+.fileSelect{
+    display: flex;
+    align-items: center;
+    font: inherit;
+    font-weight: bold;
+    button {
+        width: 7vw;
+        margin-left: 5%;
+        margin-right: 5%;
+        height: 75%;
+        background: none;
+        border: 2px solid lightgray;
+        color: white;
+        font: inherit;
+        font-weight: bold;
+        font-size: larger;
+    }
+    input {
+        font-size: larger;
+        width: 12vw;
+        text-align: center;
+        color: rgba(0, 0, 0, 0);
+    }
+    input::file-selector-button{
+        width: 10vw;
+        margin-left: 5%;
+        margin-right: 5%;
+        height: 75%;
+        background: none;
+        border: 2px solid lightgray;
+        color: white;
+        font: inherit;
+        font-weight: bold;
+        font-size: larger;
+    }
+}
+
+.fileLayout{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 33%); /* 3 columns of 100px each */
+    grid-template-rows: repeat(3, 33%);    /* 3 rows of 100px each */
+}

@@ -14,19 +14,21 @@ export default function Finance() {
     const [user, setUser] = useState<User>(createBlankUser());
     const [currPanel, setCurrPanel] = useState<Number>(0);
     const [budgetItems, setBudgetItems] = useState<{[key: number]: BudgetItem}>({});
+    const [actionItems, setActionItems] = useState<{[id: number]: number}>({});
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
-    const update = () => {
+    const update = (currUser:User = user) => {
         getBudgetItems().then(
-            (currBudgetItems) => {setBudgetItems(currBudgetItems); getActionItems(currBudgetItems, user)})
+            (currBudgetItems) => {toast.dismiss(); setBudgetItems(currBudgetItems); 
+                setActionItems(getActionItems(currBudgetItems, currUser))})
     }
 
     return (
         <>
-            <PopupManager user={user} update={update}></PopupManager>
-            <Navbar id={cookies.user} username={user.name} signIn={(text: string) => signIn(text).then(
-                (currUser: User) => { setUser(currUser);  setCookie('user', currUser.id); update();})} />
             <ToastContainer className='announcements' position='top-right' autoClose={1000} pauseOnHover={false} hideProgressBar={true} />
+            <PopupManager user={user} items={budgetItems} update={update} updateActionItems={() => setActionItems(getActionItems(budgetItems, user))}></PopupManager>
+            <Navbar id={cookies.user} username={user.name} signIn={(text: string) => signIn(text).then(
+                (currUser: User) => { setUser(currUser);  setCookie('user', currUser.id); update(currUser);})} />
             {((user.id == "")) ? (
                 <div className="splash">
                     <div className="description">

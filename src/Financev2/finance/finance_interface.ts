@@ -36,7 +36,7 @@ export const signIn = (id: string): Promise<datatypes.User> => {
                     email: response.data["Email"],
                     project: response.data["Project"],
                     subteam: response.data["Subteam"].split(" ")[1],
-                    permissions: response.data["Permissions"].split("/"),
+                    permissions: response.data["Permissions"].split("/").map((permission: string) => permission.trim()),
                     address: {street: response.data["Street/PO Box"], city: response.data["City"],
                         state: response.data["State"], zipCode: response.data["Zip Code"]},
                     phoneNumber: response.data["Phone Number"], // Assuming 0 is a placeholder
@@ -94,21 +94,22 @@ export const getActionItems = (budgetItems: {[key: number]: datatypes.BudgetItem
             console.log('test');
             const warnId = toast.warn('Submit Reciept for ' + budgetItem.request.description, {
                 autoClose: false, closeButton: false, onClick: () => {
-                    setPopup('hi')}});
+                    toast.dismiss(); setPopup('reciept ' + id)}});
             actionItems[id] = Number(warnId);
         }
         //Check if we need to approve something
-        else if(budgetItems[id].status === 'Pending Approval' && 'Business' in user.permissions){
+        else if(budgetItems[id].status === 'Pending Approval' &&  user.permissions.includes("Business")){
+            console.log('here!');
             const warnId = toast.warn('Review ' + budgetItem.request.description, {
                 autoClose: false, closeButton: false, onClick: () => {
-                    setPopup('hi')}});
+                    toast.dismiss(); setPopup('review ' + id)}});
             actionItems[id] = Number(warnId);
         }
         //Check if we need to approve something as admin
-        else if(budgetItems[id].status === 'Pending Admin Approval' && ("Admin (" + budgetItems[id].request.subteam + ")") in user.permissions){
+        else if(budgetItems[id].status === 'Pending Admin Approval' && user.permissions.includes("Admin (" + budgetItems[id].request.subteam + ")") ){
             const warnId = toast.warn('Review' + budgetItem.request.description + ' as Admin', {
                 autoClose: false, closeButton: false, onClick: () => {
-                    setPopup('hi')}});
+                    toast.dismiss(); setPopup('admin_review ' + id)}});
             actionItems[id] = Number(warnId);
         }
     })
@@ -150,27 +151,87 @@ export const getOptions = ():Promise<datatypes.SubmissionOptions> => {
         });
     });
 };
-
-export const submitRequest = (request:{[key: string]:string}) => {
+export const submitRequest = (request:{[key: string]:string}):Promise<void> => {
     const loading = toast.loading('Submitting Request...');
-    axios.post(url + 'submit/request', request).then(() => {
-        toast.update(loading, {
-            render: "Request Submitted",
-            type: "success",
-            autoClose: 1000,
-            isLoading: false,
+    return new Promise<void>((resolve)=>{
+        axios.post(url + 'submit/request', request).then(() => {
+            toast.update(loading, {
+                render: "Request Submitted",
+                type: "success",
+                autoClose: 1000,
+                isLoading: false,
+            });
+            resolve()
+        })
+            .catch(error => {
+            console.error('Error posting request:', error);
+            toast.update(loading, {
+                render: error.message,
+                type: "error",
+                autoClose: 1000,
+                isLoading: false,
+            });
+            resolve()
+            });
+    })
+}
+
+
+export const postApproval = (approval:{[key: string]:string}):Promise<void> => {
+    const loading = toast.loading('Submitting Approval...');
+    return new Promise<void>( (resolve) => {
+        axios.post(url + 'approve', approval).then( () =>
+            toast.update(loading, {
+                render: "Approval Submitted",
+                type: "success",
+                autoClose: 1000,
+                isLoading: false,
+            })
+        ).then( () => {        resolve();
+        })
+        .catch(error => {
+          console.error('Error posting approval:', error);
         });
     })
-        .catch(error => {
-        console.error('Error posting request:', error);
-        toast.update(loading, {
-            render: error.message,
-            type: "error",
-            autoClose: 1000,
-            isLoading: false,
+    
+  };
+
+export  const postFiles = (cost:number, tax:number, id:number, nuID: string, files:File[]):Promise<void> => {
+    const loading = toast.loading('Submitting Files...');
+    if (files.length === 0) { return new Promise<void>(()=>{}); }
+    return new Promise<void>((resolve) => {
+        const formData = new FormData();
+        Array.from(files).forEach(file => {
+          formData.append(`file_uploads`, file);
         });
-        });
-}
+        axios.post(url + 'upload/' + id, formData)
+          .then(() => {
+            axios.post(url + 'submit/final', { 'Cost': cost, 'Tax': tax, 'ID': id, 'NUId': nuID})
+              .then(() => {
+                toast.update(loading, {
+                    render: "Files Submitted",
+                    type: "success",
+                    autoClose: 1000,
+                    isLoading: false,
+                })
+                resolve();
+              })
+              .catch((err) => {
+                toast.update(loading, {
+                    render: err.message,
+                    type: "error",
+                    autoClose: 1000,
+                    isLoading: false,
+                })
+                console.error('Error submitting final request:', err);
+              });
+          })
+          .catch((err) => {
+            console.error('Error uploading files:', err);
+          });
+    })
+    
+  };
 
 const parseBudgetItems = (data:{[key: number]: {[key:string]:string}}) : {[key: number]: datatypes.BudgetItem} => {
     var budgetItems:{[key: number]: datatypes.BudgetItem} = []
