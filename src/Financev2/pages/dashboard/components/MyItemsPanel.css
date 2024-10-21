@@ -27,13 +27,18 @@
 }
 
 .textContent{
-    width: 100%;
+    width: 90%;
     text-align: center;
     justify-content: center;
-    line-height: 100%;
+
 }
 .textContent h3{
+    white-space: nowrap;          /* Prevent text from wrapping to the next line */
+    text-overflow: ellipsis;
+    overflow: hidden;
     margin-bottom: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 .textContent p{
     margin-top: 0px;

@@ -16,7 +16,8 @@ const MyItemsPanel = ({ user, budgetItems}: { user: User, budgetItems: {[key: nu
                 <div key={key} className="myItem">
                     <img src={value.status === "Approved" ? alert : pending }></img>
                     <div className="textContent">
-                        <h3>{value.request.description} (${value.request.cost})</h3><p>{value.status}</p>
+                        <h3>${value.request.cost}: {value.request.description} </h3>
+                        <p>{value.status}</p>
                     </div>
                 </div>
             ))}
