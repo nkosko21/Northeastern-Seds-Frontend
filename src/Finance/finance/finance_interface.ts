@@ -106,7 +106,7 @@ export const getActionItems = (budgetItems: {[key: number]: datatypes.BudgetItem
             actionItems[id] = Number(warnId);
         }
         //Check if we need to approve something as admin
-        else if(budgetItems[id].status === 'Pending Admin Approval' && user.permissions.includes("Admin (" + budgetItems[id].request.subteam + ")") ){
+        else if(budgetItems[id].status === 'Pending Admin Approval' && user.permissions.includes("Admin (" + budgetItems[id].request.project + ")") ){
             const warnId = toast.warn('Review' + budgetItem.request.description + ' as Admin', {
                 autoClose: false, closeButton: false, onClick: () => {
                     toast.dismiss(); setPopup('admin_review ' + id)}});
