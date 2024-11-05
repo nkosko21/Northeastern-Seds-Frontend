@@ -91,7 +91,6 @@ export const getActionItems = (budgetItems: {[key: number]: datatypes.BudgetItem
         const id = Number(key);         //Idk why it is so insistent that key is a string
         //Check whether we have one of our submissions that needs to be submitted
         if(budgetItems[id].status === 'Approved' && budgetItem.request.requestee == user.name){
-            console.log('test');
             const warnId = toast.warn('Submit Reciept for ' + budgetItem.request.description, {
                 autoClose: false, closeButton: false, onClick: () => {
                     toast.dismiss(); setPopup('reciept ' + id)}});
@@ -236,7 +235,8 @@ export  const postFiles = (cost:number, tax:number, id:number, nuID: string, fil
 const parseBudgetItems = (data:{[key: number]: {[key:string]:string}}) : {[key: number]: datatypes.BudgetItem} => {
     var budgetItems:{[key: number]: datatypes.BudgetItem} = []
     Object.entries(data).forEach(([key, currElement]) => {
-        budgetItems[Number(key)] = ({
+        if( currElement['Status'] !== 'Cancelled' ){
+            budgetItems[Number(key)] = ({
             request: {requestee: currElement['Requestee'], date: currElement['Request Date'], cost: Number(currElement['Requested Cost']),
                 project: currElement['Project'], subteam: currElement['Subteam'], description: currElement['Description'], link: currElement['Link'],
                 index: currElement['Budget Index'], account: currElement['Accont']},
@@ -248,6 +248,8 @@ const parseBudgetItems = (data:{[key: number]: {[key:string]:string}}) : {[key: 
             advisorDate: currElement['Advisor Approval Date'],
             notes: currElement['Notes']
             })
+        }
+        
     })
     return budgetItems;
 }
