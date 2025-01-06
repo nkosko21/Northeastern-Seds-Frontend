@@ -108,8 +108,9 @@ const NewSubmission = ({user, update}:{user:User, update:() => void}) => {
                     else{
                         submitRequest(
                         {
-                            'Requestee': user.name, 'Index': index, 'Account': account,
-                            'Description': description, 'Project': project, 'Subteam': subteam, 'Cost': cost, 'Link': link
+                            'requestee': user.name, 'budget_index': index, 'account_code': account,
+                            'description': description, 'project_name': project, 'subteam_name': subteam, 
+                            'request_cost': cost, 'link': link
                         }).then(() => {update(); setPopup('')})}}
                     }>Submit</button>
             </div>

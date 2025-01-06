@@ -18,10 +18,10 @@ const ReviewSubmission = ({user, item, id, updateActionItems, update}:{user:User
     const [approved, setApproved] = useState<boolean>(true);
 
     const approve = (approved:boolean) => {
-        postApproval({
+        postApproval(id, {
             'approved': approved? 'true' : 'false',
-            'id': String(id),
-            'user': user.id,
+            'user': user.name,
+            'level': item.status == 'Pending Approval'? '' : 'admin',
             'note': note
         }).then(() => {update(); setPopup('')});
     }

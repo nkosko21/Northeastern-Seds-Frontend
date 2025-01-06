@@ -43,9 +43,18 @@
     background-color: white;
     border: none;
     border-radius: 50px;
+    margin: 2.5%;
     text-align: center;
     font-family: inherit;
-    font-size: larger;
+    font-size: x-large;
     height: 50%;
     width: 50%;
+}
+
+.inputs{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
 }

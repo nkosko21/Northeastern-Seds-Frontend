@@ -5,15 +5,15 @@ import {setPopup} from '../popups/PopupManager';
 import * as datatypes from './datatypes';
 
 const url = `https://api.northeasternseds.com/`; // Base URL for the API
-
+var token = ''
 
 // Function to handle sign-in action
-export const signIn = (id: string): Promise<datatypes.User> => {
+export const signIn = (nuID: string, password:string ): Promise<datatypes.AuthResponse> => {
     //This is the loading icon 
     const loading = toast.loading('Signing in...');
     // Make a GET request to authenticate the user
-    return new Promise<datatypes.User>((resolve) => {
-        axios.get(url + `auth/${id}`).then(response => {
+    return new Promise<datatypes.AuthResponse>((resolve) => {
+        axios.get(url + `auth?nuid=${nuID}&password=${password}`).then(response => {
             if (Object.keys(response.data).length === 0) {
                 toast.update(loading, {
                     render: "User Not Found",
@@ -21,7 +21,10 @@ export const signIn = (id: string): Promise<datatypes.User> => {
                     autoClose: 1000,
                     isLoading: false,
                 });
-                resolve(datatypes.createBlankUser());
+                resolve({
+                    token: '',
+                    actions: {}
+                });
 
             } else {
                 toast.update(loading, {
@@ -30,16 +33,11 @@ export const signIn = (id: string): Promise<datatypes.User> => {
                     autoClose: 1000,
                     isLoading: false,
                 });
+                token = response.data['token']
                 resolve({
-                    id: response.data["NUId"],
-                    name: response.data["Name"],
-                    email: response.data["Email"],
-                    project: response.data["Project"],
-                    subteam: response.data["Subteam"].split(" ")[1],
-                    permissions: response.data["Permissions"].split("/").map((permission: string) => permission.trim()),
-                    address: {street: response.data["Street/PO Box"], city: response.data["City"],
-                        state: response.data["State"], zipCode: response.data["Zip Code"]},
-                    phoneNumber: response.data["Phone Number"], // Assuming 0 is a placeholder
+                    token: response.data['token'],
+                    actions: response.data['actions']
+                    
                 });
             }
         }).catch(error => {
@@ -50,17 +48,58 @@ export const signIn = (id: string): Promise<datatypes.User> => {
                 isLoading: false,
             });
             console.error('Error fetching auth data:', error); // Handle errors
-            resolve(datatypes.createBlankUser());
+            resolve({
+                token: '',
+                actions: {}
+            });
         });
     });
 };
+
+export const getUser = ():Promise<datatypes.User> => {
+    const loading = toast.loading('Getting User Info...');
+    return new Promise<datatypes.User>((resolve) => {
+        // Make another GET request to fetch the request list after authentication
+        axios.get(url + `user?token=${token}`)
+        .then(response => {
+            console.log("Test")
+            console.log(response)
+            toast.update(loading, {
+                render: "Budget Items Retrieved",
+                type: "success",
+                autoClose: 1000,
+                isLoading: false,
+            });
+            resolve({
+                id: response.data["nuid"],
+                name: response.data["name"],
+                email: response.data["email"],
+                project: response.data["project_name"],
+                subteam: response.data["subteam_name"].split(" ")[1],
+                permissions: response.data["permissions"].split("/").map((permission: string) => permission.trim()),
+                address: {street: response.data["street/po_box"], city: response.data["city"],
+                state: response.data["state"], zipCode: response.data["zip_code"]},
+                phoneNumber: response.data["phone_number"], // Assuming 0 is a placeholder);
+            })
+        })
+        .catch(error => {
+            console.log(error);
+            toast.update(loading, {
+                render: error.message,
+                type: "error",
+                isLoading: false,
+            });
+            resolve(datatypes.createBlankUser());
+        });
+    })
+}
 
 //This is a function that gets all of the requests
 export const getBudgetItems = (): Promise<{[key: number]: datatypes.BudgetItem}> => {
     const loading = toast.loading('Getting Budget Items...');
     return new Promise<{[key: number]: datatypes.BudgetItem}>((resolve) => {
         // Make another GET request to fetch the request list after authentication
-        axios.get(url + 'req_list')
+        axios.get(url + `requests?token=${token}`)
         .then(response => {
             toast.update(loading, {
                 render: "Budget Items Retrieved",
@@ -87,6 +126,7 @@ export const getBudgetItems = (): Promise<{[key: number]: datatypes.BudgetItem}>
 export const getActionItems = (budgetItems: {[key: number]: datatypes.BudgetItem}, user: datatypes.User): {[id: number]: number} => {
     console.log('getting action items...')
     var actionItems:{[id: number]: number} = {};
+    console.log(budgetItems)
     Object.entries(budgetItems).map(([key, budgetItem]) => {
         const id = Number(key);         //Idk why it is so insistent that key is a string
         //Check whether we have one of our submissions that needs to be submitted
@@ -97,7 +137,7 @@ export const getActionItems = (budgetItems: {[key: number]: datatypes.BudgetItem
             actionItems[id] = Number(warnId);
         }
         //Check if we need to approve something
-        else if(budgetItems[id].status === 'Pending Approval' &&  user.permissions.includes("Business")){
+        else if(budgetItems[id].status === 'Pending Approval' &&  (user.permissions.includes("Finance") || user.permissions.includes(`(${budgetItems[id].request.project}) ${budgetItems[id].request.subteam} Lead`))){
             console.log('here!');
             const warnId = toast.warn('Review ' + budgetItem.request.description, {
                 autoClose: false, closeButton: false, onClick: () => {
@@ -105,12 +145,13 @@ export const getActionItems = (budgetItems: {[key: number]: datatypes.BudgetItem
             actionItems[id] = Number(warnId);
         }
         //Check if we need to approve something as admin
-        else if(budgetItems[id].status === 'Pending Admin Approval' && user.permissions.includes("Admin (" + budgetItems[id].request.project + ")") ){
+        else if(budgetItems[id].status === 'Pending Admin Approval' && user.permissions.includes(budgetItems[id].request.project + " Admin") ){
             const warnId = toast.warn('Review' + budgetItem.request.description + ' as Admin', {
                 autoClose: false, closeButton: false, onClick: () => {
                     toast.dismiss(); setPopup('admin_review ' + id)}});
             actionItems[id] = Number(warnId);
         }
+        
     })
     return actionItems;
 }
@@ -137,7 +178,7 @@ export const getOptions = ():Promise<datatypes.SubmissionOptions> => {
               autoClose: 1000,
               isLoading: false,
           });
-          resolve( {adminThreashold: response.data['Admin Threshold'], budgetOptions: response.data['Budget Account Options'], projectOptions: response.data['Project Options'], subteamOptions: response.data['Subteam Options']})
+          resolve( {adminThreashold: response.data['admin_threshold'], budgetOptions: response.data['budget_account_options'], projectOptions: response.data['project_options'], subteamOptions: response.data['subteam_options']})
         })
         .catch(error => {
           console.error('Error fetching options:', error);
@@ -153,7 +194,7 @@ export const getOptions = ():Promise<datatypes.SubmissionOptions> => {
 export const submitRequest = (request:{[key: string]:string}):Promise<void> => {
     const loading = toast.loading('Submitting Request...');
     return new Promise<void>((resolve)=>{
-        axios.post(url + 'submit/request', request).then(() => {
+        axios.post(url + `request?token=${token}`, request).then(() => {
             toast.update(loading, {
                 render: "Request Submitted",
                 type: "success",
@@ -176,10 +217,10 @@ export const submitRequest = (request:{[key: string]:string}):Promise<void> => {
 }
 
 
-export const postApproval = (approval:{[key: string]:string}):Promise<void> => {
+export const postApproval = (rqid:number, approval:{[key: string]:string}):Promise<void> => {
     const loading = toast.loading('Submitting Approval...');
     return new Promise<void>( (resolve) => {
-        axios.post(url + 'approve', approval).then( () =>
+        axios.post(url + `requests/${rqid}/approval?token=${token}`, approval).then( () =>
             toast.update(loading, {
                 render: "Approval Submitted",
                 type: "success",
@@ -202,28 +243,30 @@ export  const postFiles = (cost:number, tax:number, id:number, nuID: string, fil
         const formData = new FormData();
         Array.from(files).forEach(file => {
           formData.append(`file_uploads`, file);
+          formData.append('data', JSON.stringify({'rqid': id, 'final_cost': cost, 'tax': tax}))
         });
-        axios.post(url + 'upload/' + id, formData)
+        axios.post(url + `request/${id}/upload?token=${token}` + id, formData)
           .then(() => {
-            axios.post(url + 'submit/final', { 'Cost': cost, 'Tax': tax, 'ID': id, 'NUId': nuID})
-              .then(() => {
-                toast.update(loading, {
-                    render: "Files Submitted",
-                    type: "success",
-                    autoClose: 1000,
-                    isLoading: false,
-                })
-                resolve();
-              })
-              .catch((err) => {
-                toast.update(loading, {
-                    render: err.message,
-                    type: "error",
-                    autoClose: 1000,
-                    isLoading: false,
-                })
-                console.error('Error submitting final request:', err);
-              });
+            toast.update(loading, {
+                render: "Files Submitted",
+                type: "success",
+                autoClose: 1000,
+                isLoading: false,
+            })
+            resolve();
+            // axios.post(url + 'submit/final', { 'Cost': cost, 'Tax': tax, 'ID': id, 'NUId': nuID})
+            //   .then(() => {
+                
+            //   })
+            //   .catch((err) => {
+            //     toast.update(loading, {
+            //         render: err.message,
+            //         type: "error",
+            //         autoClose: 1000,
+            //         isLoading: false,
+            //     })
+            //     console.error('Error submitting final request:', err);
+            //   });
           })
           .catch((err) => {
             console.error('Error uploading files:', err);
@@ -235,21 +278,20 @@ export  const postFiles = (cost:number, tax:number, id:number, nuID: string, fil
 const parseBudgetItems = (data:{[key: number]: {[key:string]:string}}) : {[key: number]: datatypes.BudgetItem} => {
     var budgetItems:{[key: number]: datatypes.BudgetItem} = []
     Object.entries(data).forEach(([key, currElement]) => {
-        if( currElement['Status'] !== 'Cancelled' ){
+        if( currElement['status'] !== 'Cancelled' ){
             budgetItems[Number(key)] = ({
-            request: {requestee: currElement['Requestee'], date: currElement['Request Date'], cost: Number(currElement['Requested Cost']),
-                project: currElement['Project'], subteam: currElement['Subteam'], description: currElement['Description'], link: currElement['Link'],
-                index: currElement['Budget Index'], account: currElement['Accont']},
-            status: currElement['Status'],
-            approval: {date: currElement['Approval Date'], approver: currElement['Approver']},
-            adminApproval: {date: currElement['Admin Date'], approver: currElement['Admin Approver']},
-            submission: {cost: Number(currElement['Final Cost']), tax: Number(currElement['Tax']), reciept: currElement['Reciept'], date: currElement['Submission Date']},
-            verification: currElement['SABO Reciept'],
-            advisorDate: currElement['Advisor Approval Date'],
-            notes: currElement['Notes']
+            request: {requestee: currElement['requestee'], date: currElement['request_date'], cost: Number(currElement['request_cost']),
+                project: currElement['project_name'], subteam: currElement['subteam_name'], description: currElement['description'], link: currElement['link'],
+                index: currElement['budget_index'], account: currElement['account_code']},
+            status: currElement['status'],
+            approval: {date: currElement['approval_date'], approver: currElement['approver']},
+            adminApproval: {date: currElement['admin_approval_date'], approver: currElement['admin_approver']},
+            submission: {cost: Number(currElement['final_cost']), tax: Number(currElement['tax']), reciept: currElement['reciept'], date: currElement['submission_date']},
+            verification: currElement['sabo_link'],
+            advisorDate: currElement['advisor_approval_date'],
+            notes: currElement['notes']
             })
         }
-        
     })
     return budgetItems;
 }

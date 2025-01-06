@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import Navbar from './Navbar';
 import './Finance.css';
-import { signIn, getBudgetItems, getActionItems } from './finance/finance_interface';
-import {User, createBlankUser, BudgetItem, createBlankBudgetItem} from './finance/datatypes';
+import { signIn, getBudgetItems, getActionItems, getUser } from './finance/finance_interface';
+import {User, createBlankUser, BudgetItem, createBlankBudgetItem, AuthResponse} from './finance/datatypes';
 import { ToastContainer, toast } from 'react-toastify';
 import {PopupManager} from './popups/PopupManager'
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,7 +15,7 @@ export default function Finance() {
     const [currPanel, setCurrPanel] = useState<Number>(0);
     const [budgetItems, setBudgetItems] = useState<{[key: number]: BudgetItem}>({});
     const [actionItems, setActionItems] = useState<{[id: number]: number}>({});
-    const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
     const update = (currUser:User = user) => {
         getBudgetItems().then(
@@ -27,8 +27,8 @@ export default function Finance() {
         <>
             <ToastContainer className='announcements' position='top-right' autoClose={1000} pauseOnHover={false} hideProgressBar={true} />
             <PopupManager user={user} items={budgetItems} update={update} updateActionItems={() => setActionItems(getActionItems(budgetItems, user))}></PopupManager>
-            <Navbar id={cookies.user} username={user.name} signIn={(text: string) => signIn(text).then(
-                (currUser: User) => { setUser(currUser);  setCookie('user', currUser.id); update(currUser);})} />
+            <Navbar id={''} username={user.name} signIn={(NUId: string, password:string) => signIn(NUId, password).then( 
+                (response: AuthResponse) => { setCookie('token', response.token); getUser().then((currUser:User) => {setUser(currUser); update(currUser);})})} />
             {((user.id == "")) ? (
                 <div className="splash">
                     <div className="description">
