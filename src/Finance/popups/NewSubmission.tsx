@@ -52,7 +52,7 @@ const NewSubmission = ({user, update}:{user:User, update:() => void}) => {
 
                         <div className='line indexLine'>
                             <h2>Index:</h2>
-                            <select value={index} onChange={(e) => setAccount(e.target.value)}>
+                            <select value={account} onChange={(e) => setAccount(e.target.value)}>
                                 {(index === 'Budget Account'? options.budgetOptions : cashOptions).map((value)=>(
                                     <option>{value}</option>
                                 ))}
