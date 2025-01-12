@@ -245,7 +245,7 @@ export  const postFiles = (cost:number, tax:number, id:number, nuID: string, fil
           formData.append(`file_uploads`, file);
           formData.append('data', JSON.stringify({'rqid': id, 'final_cost': cost, 'tax': tax}))
         });
-        axios.post(url + `request/${id}/upload?token=${token}` + id, formData)
+        axios.post(url + `request/${id}/upload?token=${token}`, formData)
           .then(() => {
             toast.update(loading, {
                 render: "Files Submitted",
